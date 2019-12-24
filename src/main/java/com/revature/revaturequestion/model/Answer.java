@@ -1,6 +1,5 @@
 package com.revature.revaturequestion.model;
 
-import java.util.List;
 
 import lombok.Data;
 
