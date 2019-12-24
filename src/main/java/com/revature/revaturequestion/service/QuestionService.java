@@ -32,7 +32,7 @@ public class QuestionService {
 	
 	
 
-	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws ServiceException, ValidatorException,NullPointerException{
+	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws ServiceException, ValidatorException{
 
 		Boolean result;
 		try {
@@ -52,7 +52,7 @@ public class QuestionService {
 
 	}
 
-	public boolean deleteQuestion(int questionId) throws  ServiceException,NullPointerException {
+	public boolean deleteQuestion(int questionId) throws  ServiceException {
 
 		Boolean result;
 		try {
@@ -70,7 +70,7 @@ public class QuestionService {
 	
 	
 
-	public boolean updateQuestion(int questionId, Boolean status) throws ServiceException,NullPointerException
+	public boolean updateQuestion(int questionId, Boolean status) throws ServiceException
 
 	{
 		Boolean result = null;
@@ -88,7 +88,7 @@ public class QuestionService {
 	
 	
 	
-	public List<Question> listAll(Boolean status) throws ServiceException,NullPointerException {
+	public List<Question> listAll(Boolean status) throws ServiceException {
 		List<Question> question = null;
 		try {
 
@@ -117,15 +117,15 @@ public class QuestionService {
 			question.setSkillPoints(answerDTO.getSkillPoints());
 			question.setScore(answerDTO.getScore());
 			question.setDuration(answerDTO.getDuration());
-			
+
 			Answer answer = new Answer();
 			answer.setOption(answerDTO.getOption());
 			answer.setIsRightAnswer(answerDTO.getIsRightAnswer());
 			answer.setRightAnswerExplanation(answerDTO.getRightAnswerExplanation());
 			answer.setIsStricky(answerDTO.getIsStricky());
-			
-			
-			
+
+
+
 
 			// questionValidator.updateQuestionValidate(question, status);
 			result = questionDAOImpl.update(question,answer);
