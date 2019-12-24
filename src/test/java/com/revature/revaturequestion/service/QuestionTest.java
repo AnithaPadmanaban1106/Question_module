@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
 
 import com.revature.revaturequestion.dao.QuestionDAOImpl;
@@ -20,18 +19,12 @@ import com.revature.revaturequestion.model.Question;
 import com.revature.revaturequestion.model.QuestionType;
 import com.revature.revaturequestion.validator.QuestionValidator;
 
-//@RunWith(SpringRunner.class)
 public class QuestionTest {
 	QuestionService questionService = new QuestionService(new QuestionDAOImpl(), new QuestionValidator());
 
-	// DataSource dataSource;
+	
 
-	// ListAllQuestionService listAllQuestionService = new
-	// ListAllQuestionService(new ListAllQuestionDAOImpl(dataSource));
-
-	// ListAllQuestionDAOImpl obj=new ListAllQuestionDAOImpl();
-
-	@Test
+	//@Test
 	public void validDeleteQuestionTest() throws ValidatorException, ServiceException {
 
 		int questionId = 68;
@@ -64,7 +57,7 @@ public class QuestionTest {
 	public void updateQuestionDeactiveValidTest() throws ServiceException {
 
 		Boolean status = false;
-		int questionId = 22;
+		int questionId = 43;
 		Boolean question = false;
 		question = questionService.updateQuestion(questionId, status);
 		assertTrue(question);
@@ -75,7 +68,7 @@ public class QuestionTest {
 	public void updateQuestionActiveValidTest() throws ServiceException {
 
 		Boolean status = true;
-		int questionId = 22;
+		int questionId = 44;
 		Boolean question = false;
 		question = questionService.updateQuestion(questionId, status);
 		assertTrue(question);

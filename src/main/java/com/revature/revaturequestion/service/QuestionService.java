@@ -2,7 +2,6 @@ package com.revature.revaturequestion.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.revaturequestion.dao.QuestionDAOImpl;
@@ -19,13 +18,13 @@ import com.revature.revaturequestion.validator.QuestionValidator;
 
 @Service
 public class QuestionService {
-	@Autowired
+	
 	QuestionDAOImpl questionDAOImpl;
 	
-	@Autowired
+	
 	QuestionValidator questionValidator;
 	
-	QuestionService(QuestionDAOImpl question,QuestionValidator validator)
+	public QuestionService(QuestionDAOImpl question,QuestionValidator validator)
 	{
 		this.questionDAOImpl=question;
 		this.questionValidator=validator;
@@ -33,7 +32,7 @@ public class QuestionService {
 	
 	
 
-	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws ServiceException{
+	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws ServiceException, ValidatorException,NullPointerException{
 
 		Boolean result;
 		try {
@@ -43,16 +42,17 @@ public class QuestionService {
 				
 				
 			result = questionDAOImpl.saveQuestionAnswer(questionDTO);
-		} catch (DBException | ValidatorException  e) {
+		} catch (DBException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
-
 		}
+		
+		
 		return result;
 
 	}
 
-	public boolean deleteQuestion(int questionId) throws  ServiceException {
+	public boolean deleteQuestion(int questionId) throws  ServiceException,NullPointerException {
 
 		Boolean result;
 		try {
@@ -70,13 +70,12 @@ public class QuestionService {
 	
 	
 
-	public boolean updateQuestion(int questionId, Boolean status) throws ServiceException
+	public boolean updateQuestion(int questionId, Boolean status) throws ServiceException,NullPointerException
 
 	{
 		Boolean result = null;
 		try {
 			
-				//questionValidator.updateQuestionValidate(questionId, status);
 		
 			result = questionDAOImpl.updateQuestion(questionId, status);
 		} catch (DBException e) {
@@ -89,7 +88,7 @@ public class QuestionService {
 	
 	
 	
-	public List<Question> listAll(Boolean status) throws ServiceException {
+	public List<Question> listAll(Boolean status) throws ServiceException,NullPointerException {
 		List<Question> question = null;
 		try {
 
@@ -137,5 +136,4 @@ public class QuestionService {
 		return result;
 
 	}
-
 }

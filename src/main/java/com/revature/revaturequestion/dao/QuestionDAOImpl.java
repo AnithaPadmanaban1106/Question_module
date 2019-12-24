@@ -8,6 +8,8 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.revature.revaturequestion.connection.ConnectionUtil;
@@ -18,12 +20,13 @@ import com.revature.revaturequestion.model.Question;
 
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
-	// @Autowired
-	// DataSource datasource;
+	
 	Connection con = null;
 	PreparedStatement pst = null;
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuestionDAOImpl.class);
 	
-	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws DBException {
+	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws DBException,NullPointerException
+	{
 		Boolean result = false;
 		Savepoint questionAnswer = null;
 		try {
@@ -57,53 +60,47 @@ public class QuestionDAOImpl implements QuestionDAO {
 			}
 
 			List<Answer> answerList = questionDTO.getAnswer();
-			String answerDetail = "";
 			int count = 0;
-			for (Answer answers : answerList) {
-				answerDetail = answerDetail + "(" + questionId + "," + "\"" + answers.getOption() + "\"" + ","
-						+ answers.getIsRightAnswer() + " ," + "\"" + answers.getRightAnswerExplanation() + "\"" + ","
-						+ answers.getIsStricky() + "," + answers.getGrading() + ")";
-				count++;
+			StringBuffer stringBuffer = new StringBuffer();
+			
 
+			for (Answer answers : answerList) {
+				stringBuffer.append("(");
+				stringBuffer.append(questionId);
+				stringBuffer.append(",");
+				stringBuffer.append("\"");
+				stringBuffer.append(answers.getOption());
+				stringBuffer.append("\"");
+				stringBuffer.append(",");
+				stringBuffer.append(answers.getIsRightAnswer());
+				stringBuffer.append(",");
+				stringBuffer.append("\"");
+				stringBuffer.append(answers.getRightAnswerExplanation());
+				stringBuffer.append("\"");
+				stringBuffer.append(",");
+				stringBuffer.append(answers.getIsStricky());
+				stringBuffer.append(",");
+				stringBuffer.append(answers.getGrading());
+				stringBuffer.append(")");
+							count++;
 				if (count < answerList.size()) {
-					answerDetail = answerDetail + ",";
+					stringBuffer.append(",");
 				}
 
 			}
 			String sqlMultiple = "insert into question_answers(question_id,`option`,is_right_answer,right_ans_explanation,is_sticky,grading)values"
-					+ answerDetail;
-			System.out.println("sqlMultiple" + sqlMultiple);
+					+ stringBuffer;
+			LOGGER.info("sqlMultiple"+sqlMultiple);
 			pst = con.prepareStatement(sqlMultiple);
 			int check = pst.executeUpdate();
-				
 		
-			/*
-			 * String selectAnswerId = "select last_insert_id()"; pst =
-			 * con.prepareStatement(selectAnswerId);
-			 * 
-			 * ResultSet resultSet = pst.executeQuery(); int answerId = 0; if
-			 * (resultSet.next()) {
-			 * 
-			 * answerId = rs.getInt("last_insert_id()");
-			 * 
-			 * } System.out.println("Answer ID================>"+answerId);
-			 * 
-			 * if(questionDTO.getQuestionType().toString()=="Matching") { String
-			 * sql="insert into question_matchings(question_id,answer_id,question,is_sticky)values(?,?,?,?)"
-			 * ; pst = con.prepareStatement(sql); pst.setInt(1,questionId); pst.setInt(2,
-			 * answerId); pst.setString(3, questionDTO.getQuestion()); pst.setBoolean(4,
-			 * questionDTO.getIsSticky()); pst.executeUpdate();
-			 * 
-			 * }
-			 */
-			
 			
 
 			con.commit();
-			if (check == 1) {
+			if (check == 1||check==2) {
 				result = true;
 			}
-		} catch (SQLException e) {
+		} catch (SQLException  e) {
 			try {
 				con.rollback(questionAnswer);
 			} catch (SQLException e1) {
@@ -111,7 +108,9 @@ public class QuestionDAOImpl implements QuestionDAO {
 			}
 			e.printStackTrace();
 			throw new DBException("Unable to save Question");
-		} finally {
+		} 
+		
+		finally {
 			try {
 				pst.close();
 				con.close();
@@ -124,7 +123,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 		return result;
 	}
 
-	public boolean deleteQuestion(int questionId) throws DBException {
+	public boolean deleteQuestion(int questionId) throws DBException,NullPointerException {
 		Boolean result = false;
 		Savepoint deleteQuestion = null;
 
@@ -156,7 +155,9 @@ public class QuestionDAOImpl implements QuestionDAO {
 			}
 			e.printStackTrace();
 			throw new DBException("Unable to delete Question");
-		} finally {
+		} 
+		
+		finally {
 			try {
 				pst.close();
 				con.close();
@@ -169,7 +170,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 		return result;
 	}
 
-	public boolean updateQuestion(int questionId, Boolean status) throws DBException {
+	public boolean updateQuestion(int questionId, Boolean status) throws DBException,NullPointerException {
 		Boolean result = false;
 
 		try {
@@ -183,7 +184,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 				result = true;
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 
 			e.printStackTrace();
 			throw new DBException("Unable to update Question");
@@ -200,7 +201,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 		return result;
 	}
 
-	public List<Question> listAllQuestions(Boolean status) throws DBException {
+	public List<Question> listAllQuestions(Boolean status) throws DBException,NullPointerException {
 		Connection con = null;
 		PreparedStatement pst = null;
 		List<Question> question = new ArrayList<Question>();
@@ -218,7 +219,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 			throw new DBException("Unable to view Questions");
 
@@ -240,7 +241,6 @@ public class QuestionDAOImpl implements QuestionDAO {
 		try {
 			String title = rs.getString("q.title");
 			String tag = rs.getString("q.tag");
-			// question.setQuestionType(rs.getString("question_type"));
 			String categoryName = rs.getString("c.name");
 			String levelName = rs.getString("ql.name");
 
@@ -249,7 +249,6 @@ public class QuestionDAOImpl implements QuestionDAO {
 			value.setLevelName(levelName);
 			value.setTag(tag);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return value;
@@ -285,7 +284,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 				result = true;
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 
 			e.printStackTrace();
 			throw new DBException("Connection error");
@@ -296,7 +295,6 @@ public class QuestionDAOImpl implements QuestionDAO {
 				con.close();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

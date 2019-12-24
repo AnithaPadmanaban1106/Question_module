@@ -15,15 +15,22 @@ import com.revature.revaturequestion.model.Answer;
 public class QuestionValidator {
 
 	public void questionValidate(QuestionDTO questionDTO) throws ValidatorException {
-	  List<Answer> answer=questionDTO.getAnswer();
-	    
-		/*
-		 * String option = questionDTO.getOption(); String isRightAnswer =
-		 * String.valueOf(questionDTO.getIsRightAnswer()); String rightAnswerExplanation
-		 * = questionDTO.getRightAnswerExplanation(); String grading =
-		 * questionDTO.getGrading();
-		 */
+		List<Answer> answer = questionDTO.getAnswer();
+		
+		
+		
+		String option=null;
+		String isRightAnswer=null;
+		String rightAnswerExplanation=null;
+		int grading=0;
+		for (Answer ans : answer)
 
+		{
+			option = ans.getOption();
+			 isRightAnswer = String.valueOf(ans.getIsRightAnswer());
+			 rightAnswerExplanation = ans.getRightAnswerExplanation();
+			 grading = ans.getGrading();
+		}
 		// String isStricky = String.valueOf(questionDTO.getIsStricky());
 		String title = questionDTO.getTitle();
 		// QuestionType questionType = questionAnswerDTO.getQuestionType();
@@ -38,11 +45,15 @@ public class QuestionValidator {
 		// String status = String.valueOf(questionDTO.getStatus());
 		// String isImported = String.valueOf(questionDTO.getIsImported());
 
-		// Pattern validateIsRightAnswer =
-		// Pattern.compile(".*[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee].*");
-		Pattern validateRightAnswerExplanation = Pattern.compile(".*[^a-zA-Z0-9 ].*");
-		Pattern validateGrading = Pattern.compile(".*[^0-9].*");
-		Pattern validateOption = Pattern.compile(".*[^a-zA-Z0-9 ].*");
+		/*
+		 * Pattern validateIsRightAnswer =
+		 * Pattern.compile(".*[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee].*");
+		 * 
+		 * Pattern validateRightAnswerExplanation =
+		 * Pattern.compile(".*[^a-zA-Z0-9 ].*"); Pattern validateGrading =
+		 * Pattern.compile(".*[^0-9].*"); Pattern validateOption =
+		 * Pattern.compile(".*[^a-zA-Z0-9 ].*");
+		 */
 		// Pattern validateIsStricky =
 		// Pattern.compile(".*[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee].*");
 		Pattern validateTitle = Pattern.compile(".*[^a-zA-Z0-9 ].*");
@@ -57,16 +68,13 @@ public class QuestionValidator {
 		// Pattern.compile(".*[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee].*");
 		// Pattern validateIsImported =
 		// Pattern.compile(".*[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee].*");
-
 		/*
 		 * if (option == null || validateOption.matcher(option).matches()) { throw new
 		 * ValidatorException(MessageConstant.OPTION); }
-		 */
-
-		/*
-		 * if (isRightAnswer ==
-		 * null||validateIsRightAnswer.matcher(isRightAnswer).matches()) { throw new
-		 * ValidatorException(MessageConstant.MESSAGE); }
+		 * 
+		 * 
+		 * if (validateIsRightAnswer.matcher(isRightAnswer).matches()) { throw new
+		 * ValidatorException(MessageConstant.Message); }
 		 */
 
 		/*

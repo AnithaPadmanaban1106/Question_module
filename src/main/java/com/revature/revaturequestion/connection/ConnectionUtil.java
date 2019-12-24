@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class ConnectionUtil {
 	public static Connection getConnection() { /// method is used to get DB connection
 		String driverClassName = "com.mysql.cj.jdbc.Driver";
@@ -25,7 +22,6 @@ public class ConnectionUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(con);
 		return con;
 	}
 
