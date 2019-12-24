@@ -25,7 +25,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 	PreparedStatement pst = null;
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuestionDAOImpl.class);
 	
-	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws DBException,NullPointerException
+	public boolean saveQuestionAnswer(QuestionDTO questionDTO) throws DBException
 	{
 		Boolean result = false;
 		Savepoint questionAnswer = null;
@@ -110,6 +110,12 @@ public class QuestionDAOImpl implements QuestionDAO {
 			throw new DBException("Unable to save Question");
 		} 
 		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new DBException("Value cannot be null");
+		}
+		
 		finally {
 			try {
 				pst.close();
@@ -119,11 +125,16 @@ public class QuestionDAOImpl implements QuestionDAO {
 
 				e.printStackTrace();
 			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				throw new DBException("Value cannot be null");
+			}
 		}
 		return result;
 	}
 
-	public boolean deleteQuestion(int questionId) throws DBException,NullPointerException {
+	public boolean deleteQuestion(int questionId) throws DBException {
 		Boolean result = false;
 		Savepoint deleteQuestion = null;
 
@@ -157,6 +168,12 @@ public class QuestionDAOImpl implements QuestionDAO {
 			throw new DBException("Unable to delete Question");
 		} 
 		
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new DBException("Value cannot be null");
+		}
 		finally {
 			try {
 				pst.close();
@@ -165,16 +182,21 @@ public class QuestionDAOImpl implements QuestionDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				throw new DBException("Value cannot be null");
+			}
 		}
 		System.out.println("result" + result);
 		return result;
 	}
 
-	public boolean updateQuestion(int questionId, Boolean status) throws DBException,NullPointerException {
+	public boolean updateQuestion(int questionId, Boolean status) throws DBException {
 		Boolean result = false;
 
 		try {
-			con = ConnectionUtil.getConnection();
+			//con = ConnectionUtil.getConnection();
 			String sql = "update questions set `status`=? where id=?";
 			pst = con.prepareStatement(sql);
 			pst.setBoolean(1, status);
@@ -189,7 +211,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 			e.printStackTrace();
 			throw new DBException("Unable to update Question");
 
-		} finally {
+		} 
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new DBException("Value cannot be null");
+		}
+		finally {
 			try {
 				pst.close();
 				con.close();
@@ -197,11 +226,17 @@ public class QuestionDAOImpl implements QuestionDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				throw new DBException("Value cannot be null");
+			}
 		}
 		return result;
 	}
 
-	public List<Question> listAllQuestions(Boolean status) throws DBException,NullPointerException {
+	public List<Question> listAllQuestions(Boolean status) throws DBException {
 		Connection con = null;
 		PreparedStatement pst = null;
 		List<Question> question = new ArrayList<Question>();
@@ -223,12 +258,27 @@ public class QuestionDAOImpl implements QuestionDAO {
 			e.printStackTrace();
 			throw new DBException("Unable to view Questions");
 
-		} finally {
+		} 
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new DBException("Value cannot be null");
+		}
+		
+		finally {
 			try {
 				pst.close();
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+			
+			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				throw new DBException("Value cannot be null");
 			}
 
 		}
@@ -289,13 +339,26 @@ public class QuestionDAOImpl implements QuestionDAO {
 			e.printStackTrace();
 			throw new DBException("Connection error");
 
-		} finally {
+		} 
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new DBException("Value cannot be null");
+		}
+		finally {
 			try {
 				pst.close();
 				con.close();
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				throw new DBException("Value cannot be null");
 			}
 		}
 		return result;

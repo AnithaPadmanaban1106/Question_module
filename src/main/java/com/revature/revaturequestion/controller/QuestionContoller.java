@@ -48,17 +48,19 @@ public class QuestionContoller {
 
 		} 
 		
-		catch (ServiceException |  ValidatorException e) {
+		catch (ServiceException  e) {
+			e.printStackTrace();
+			errorMessage = e.getMessage();
+			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		catch ( ValidatorException e) {
 			e.printStackTrace();
 			errorMessage = e.getMessage();
 			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
-			errorMessage = "Null value is not allowed";
-			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);	
-		}
+		
+		
 		
 		
 		
@@ -83,12 +85,7 @@ public class QuestionContoller {
 			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
-			errorMessage = "Null value is not allowed";
-			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);	
-		}
+		
 	}
 
 	@GetMapping()
@@ -109,12 +106,7 @@ public class QuestionContoller {
 			Message message= new Message(errorMessage);
 			return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
-			errorMessage = "Null value is not allowed";
-			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);	
-		}
+		
 	}
 
 	
@@ -136,12 +128,7 @@ public class QuestionContoller {
 			errorMessage = e.getMessage();
 			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
-			errorMessage = "Null value is not allowed";
-			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);	
-		}
+		
 	}
 	
 
@@ -163,5 +150,4 @@ public class QuestionContoller {
 			return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 }
